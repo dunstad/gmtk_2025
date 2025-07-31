@@ -1,7 +1,6 @@
-/Assets
-/gmtk_2025
 /Library
 /Logs
 /Packages
 /ProjectSettings
 /UserSettings
+*.meta
