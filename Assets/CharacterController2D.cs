@@ -18,6 +18,8 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private float acceleration;
 	[SerializeField] private float brakeForce;
 	[SerializeField] private float runSpeed = 40f;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform bulletSpawnPoint;
 
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
@@ -50,10 +52,13 @@ public class CharacterController2D : MonoBehaviour
 	bool jump = false;
 	bool hasJumped = false;
 
-	private void Awake()
-	{
-		m_Rigidbody2D = GetComponent<Rigidbody2D>();
-	}
+    private GameObject gunArm;
+
+    private void Awake()
+    {
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        gunArm = GetComponentInChildren<RotateTowardTarget>().gameObject;
+    }
 
 	private void Update()
 	{
@@ -261,7 +266,6 @@ public class CharacterController2D : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
-        GameObject gunArm = GetComponentInChildren<RotateTowardTarget>().gameObject;
         gunArm.transform.localScale *= -1;
 	}
 
@@ -282,20 +286,25 @@ public class CharacterController2D : MonoBehaviour
 		activated1 = value.isPressed;
 	}
 
-	void Activate1()
-	{
-		Debug.Log("activate1");
-		// this.ability1.Activate(getAim().normalized);
-	}
+    void Activate1()
+    {
+        Debug.Log("activate1");
+        Quaternion bulletRotation = gunArm.transform.rotation;
+        bulletRotation *= Quaternion.Euler(0, 0, -90);
+        GameObject newBullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletRotation);
+        Rigidbody2D bulletRB = newBullet.GetComponent<Rigidbody2D>();
+        activated1 = false;
+    }
 
 	void OnActivate2(InputValue value)
 	{
 		activated2 = value.isPressed;
 	}
 
-	void Activate2()
-	{
-		Debug.Log("activate2");
+    void Activate2()
+    {
+        Debug.Log("activate2");
+        activated2 = false;
 	}
 
 	// void OnPickUp1(InputValue value)
