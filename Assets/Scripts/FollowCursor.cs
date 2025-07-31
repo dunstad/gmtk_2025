@@ -23,7 +23,7 @@ public class FollowCursor : MonoBehaviour
         if (true)
         {
             Vector2 lookVec = ((Vector2) lookVector + new Vector2(1, 1)) / 2;
-            Debug.Log(lookVec);
+            // Debug.Log(lookVec);
             float radius = Mathf.Min(Screen.width, Screen.height);
             mousePos = new Vector3(Screen.width * lookVec.x, Screen.height * lookVec.y, 0);
         }

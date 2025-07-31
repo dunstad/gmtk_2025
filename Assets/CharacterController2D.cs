@@ -20,6 +20,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private float runSpeed = 40f;
 
     private float horizontalMove = 0f;
+    private float verticalMove = 0f;
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
@@ -66,6 +67,7 @@ public class CharacterController2D : MonoBehaviour
         // }
         
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        verticalMove = Input.GetAxisRaw("Vertical") * runSpeed;
 
 		if (activated1)
         {
@@ -101,7 +103,7 @@ public class CharacterController2D : MonoBehaviour
         m_Rigidbody2D.velocity = new Vector2(clampedHorizontalSpeed, clampedVerticalSpeed);
         
         // Move our character
-		Move(horizontalMove * Time.fixedDeltaTime);
+		Move(horizontalMove * Time.fixedDeltaTime, verticalMove * Time.fixedDeltaTime);
 
 	}
 	
@@ -133,14 +135,14 @@ public class CharacterController2D : MonoBehaviour
 	}
 
 
-	public void Move(float move)
+	public void Move(float move, float moveY)
 	{
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
 		{
 
 			// Move the character by finding the target velocity
-			Vector3 targetVelocity = new Vector3(move * acceleration * m_Rigidbody2D.mass, 0f, 0f);
+			Vector3 targetVelocity = new Vector3(move * acceleration * m_Rigidbody2D.mass, moveY * acceleration * m_Rigidbody2D.mass, 0f);
 
 			// allows recoil to slow the player down while preserving snappy movement
 			// uses calculated recoil value to  lower movement speed cap based on aim
@@ -172,8 +174,19 @@ public class CharacterController2D : MonoBehaviour
 			{
 				m_Rigidbody2D.AddForce(new Vector3(-xSign * (brakeForce * m_Rigidbody2D.mass), 0f, 0f), ForceMode2D.Force);
 			}
+            
+			// brake force Y
+            float moveYSign = moveY / Math.Abs(moveY);
+			float ySign = m_Rigidbody2D.velocity.y / Math.Abs(m_Rigidbody2D.velocity.y);
+			bool movingOppositeMomentumY = moveYSign != ySign && Math.Abs(m_Rigidbody2D.velocity.y) > .05f;
+			if (movingOppositeMomentumY)
+			{
+				m_Rigidbody2D.AddForce(new Vector3(0f, -ySign * (brakeForce * m_Rigidbody2D.mass), 0f), ForceMode2D.Force);
+			}
+            
+
 			// brake down from bonus recoil speed (or other) to normal speed
-			bool overTopSpeed = Math.Abs(m_Rigidbody2D.velocity.x) > maxMovementSpeed;
+            bool overTopSpeed = Math.Abs(m_Rigidbody2D.velocity.x) > maxMovementSpeed;
 			if (overTopSpeed)
 			{
 				m_Rigidbody2D.AddForce(new Vector3(-xSign * .3f * (brakeForce * m_Rigidbody2D.mass), 0f, 0f), ForceMode2D.Force);
@@ -185,6 +198,12 @@ public class CharacterController2D : MonoBehaviour
 			{
 				m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
 			}
+
+            // actually stop when slow for Y axis
+            if (Math.Abs(m_Rigidbody2D.velocity.y) < 1f)
+            {
+                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0f);
+            }
 
 			// If the input is moving the player right and the player is facing left...
 			if (move > 0 && !m_FacingRight)
@@ -203,7 +222,7 @@ public class CharacterController2D : MonoBehaviour
 		if (m_Grounded && jump && !hasJumped)
 		{
 			// Add a vertical force to the player.
-			m_Grounded = false;
+            m_Grounded = false;
 			canCancelJump = true;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 			hasJumped = true;
