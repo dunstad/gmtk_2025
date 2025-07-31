@@ -3,5 +3,7 @@
 /Packages
 /ProjectSettings
 /UserSettings
+/Temp
 *.meta
 *.unity
+*.scenetemplate
