@@ -192,6 +192,13 @@ public class CharacterController2D : MonoBehaviour
 				m_Rigidbody2D.AddForce(new Vector3(-xSign * .3f * (brakeForce * m_Rigidbody2D.mass), 0f, 0f), ForceMode2D.Force);
 			}
 
+			// brake down from bonus recoil speed (or other) to normal speed for Y
+            bool overTopSpeedY = Math.Abs(m_Rigidbody2D.velocity.y) > maxMovementSpeed;
+			if (overTopSpeedY)
+			{
+				m_Rigidbody2D.AddForce(new Vector3(0f, -ySign * .3f * (brakeForce * m_Rigidbody2D.mass), 0f), ForceMode2D.Force);
+			}
+
 			// actually stop when slow
 			// without this we roll forever due to frictionless material
 			if (Math.Abs(m_Rigidbody2D.velocity.x) < 1f)
