@@ -6,10 +6,10 @@ public class Ghost : MonoBehaviour
 {
     [field: SerializeField] public float topSpeed { get; set; }
     [field: SerializeField] public float acceleration { get; set; }
-    private Rigidbody2D rb;
-    private GameObject target;
+    protected Rigidbody2D rb;
+    protected GameObject target;
 
-    void Start()
+    protected void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         if (!target)
