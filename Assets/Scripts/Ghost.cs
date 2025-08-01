@@ -18,7 +18,8 @@ public class Ghost : MonoBehaviour
         }
     }
 
-    void FixedUpdate() {
+    protected void FixedUpdate()
+    {
         Move();
     }
 
@@ -40,8 +41,15 @@ public class Ghost : MonoBehaviour
             target = GameObject.FindWithTag("Player");
         }
         Debug.Log("moving");
-        Vector3 step =  calcVelocity(getTargetDirection()) * Time.deltaTime; // calculate distance to move
+        Vector3 step = calcVelocity(getTargetDirection()) * Time.deltaTime; // calculate distance to move
         rb.AddForce(step, ForceMode2D.Impulse);
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, topSpeed);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.GetComponent<Bullet>())
+        {
+            Destroy(gameObject);
+        }
     }
 }
