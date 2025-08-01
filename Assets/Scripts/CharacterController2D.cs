@@ -20,6 +20,8 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private float runSpeed = 40f;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform bulletSpawnPoint;
+    [SerializeField] private Sprite bodySprite;
+    [SerializeField] private Sprite eatingSprite;
 
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
@@ -53,11 +55,15 @@ public class CharacterController2D : MonoBehaviour
 	bool hasJumped = false;
 
     private GameObject gunArm;
+    public bool eating = false;
+
+    private SpriteRenderer renderer;
 
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         gunArm = GetComponentInChildren<RotateTowardTarget>().gameObject;
+        renderer = GetComponentInChildren<SpriteRenderer>();
     }
 
 	private void Update()
@@ -289,10 +295,13 @@ public class CharacterController2D : MonoBehaviour
     void Activate1()
     {
         Debug.Log("activate1");
-        Quaternion bulletRotation = gunArm.transform.rotation;
-        bulletRotation *= Quaternion.Euler(0, 0, -90);
-        GameObject newBullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletRotation);
-        Rigidbody2D bulletRB = newBullet.GetComponent<Rigidbody2D>();
+        if (!eating)
+        {
+            Quaternion bulletRotation = gunArm.transform.rotation;
+            bulletRotation *= Quaternion.Euler(0, 0, -90);
+            GameObject newBullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletRotation);
+            Rigidbody2D bulletRB = newBullet.GetComponent<Rigidbody2D>();
+        }
         activated1 = false;
     }
 
@@ -305,43 +314,54 @@ public class CharacterController2D : MonoBehaviour
     {
         Debug.Log("activate2");
         activated2 = false;
+        renderer.sprite = eatingSprite;
+        eating = true;
+        gunArm.SetActive(false);
+        Invoke("StopEating", 1f);
 	}
 
-	// void OnPickUp1(InputValue value)
-	// {
-	// 	if (value.isPressed)
-	// 	{
-	// 		if (!touchingDisassembler)
-	// 		{
-	// 			// Debug.Log("pick up 1");
-	// 			if (touchingModifier.Count > 0)
-	// 			{
-	// 				Modifier mod = touchingModifier[0];
-	// 				mod.setPhysical(false);
-	// 				mod.gameObject.transform.SetParent(ability1.transform, true);
-	// 				ability1.RecalculateModifiers();
-	// 			}
-	// 		} else
-	// 		{
-	// 			// Debug.Log("disassemble 1");
-	// 			Modifier[] mods = ability1.GetComponentsInChildren<Modifier>();
-	// 			foreach (Modifier mod in mods)
-	// 			{
-	// 				mod.gameObject.GetComponent<Rigidbody2D>().position = Vector3.zero;
-	// 				mod.setPhysical(true);
-	// 				mod.gameObject.transform.SetParent(GameObject.FindWithTag("Level").transform, true);
-	// 				mod.gameObject.transform.localScale = new Vector3(1, 1, 0); // undo player flip
-	// 			}
-	// 			ability1.RecalculateModifiers();
-	// 		}
-	// 	}
-	// }
+    void StopEating()
+    {
+        renderer.sprite = bodySprite;
+        eating = false;
+        gunArm.SetActive(true);
+    }
 
-	// void OnPickUp2(InputValue value)
-	// {
-	// 	Debug.Log("pick up 2");
-	// }
-	
+	// void OnPickUp1(InputValue value)
+    // {
+    // 	if (value.isPressed)
+    // 	{
+    // 		if (!touchingDisassembler)
+    // 		{
+    // 			// Debug.Log("pick up 1");
+    // 			if (touchingModifier.Count > 0)
+    // 			{
+    // 				Modifier mod = touchingModifier[0];
+    // 				mod.setPhysical(false);
+    // 				mod.gameObject.transform.SetParent(ability1.transform, true);
+    // 				ability1.RecalculateModifiers();
+    // 			}
+    // 		} else
+    // 		{
+    // 			// Debug.Log("disassemble 1");
+    // 			Modifier[] mods = ability1.GetComponentsInChildren<Modifier>();
+    // 			foreach (Modifier mod in mods)
+    // 			{
+    // 				mod.gameObject.GetComponent<Rigidbody2D>().position = Vector3.zero;
+    // 				mod.setPhysical(true);
+    // 				mod.gameObject.transform.SetParent(GameObject.FindWithTag("Level").transform, true);
+    // 				mod.gameObject.transform.localScale = new Vector3(1, 1, 0); // undo player flip
+    // 			}
+    // 			ability1.RecalculateModifiers();
+    // 		}
+    // 	}
+    // }
+
+    // void OnPickUp2(InputValue value)
+    // {
+    // 	Debug.Log("pick up 2");
+    // }
+
     void OnLook(InputValue value)
 	{
 		// made look input action have no mouse component
