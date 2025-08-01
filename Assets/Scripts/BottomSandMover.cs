@@ -20,7 +20,6 @@ public class BottomSandMover : MonoBehaviour
     void Update()
     {
         float timePercent = timer.currentTime <= 0 ? 0f : (float)timer.currentTime / timer.roundLength;
-        Debug.Log(timePercent);
         transform.localPosition = startPos + new Vector3(0f, -sandHeight + (sandHeight * timePercent), 0f);
     }
 }
