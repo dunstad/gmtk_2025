@@ -46,10 +46,19 @@ public class Ghost : MonoBehaviour
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, topSpeed);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private void OnTriggerEnter2D(Collider2D other)
+    {
         if (other.gameObject.GetComponent<Bullet>())
         {
             Destroy(gameObject);
+        }
+    }
+    
+    private void OnCollisionEnter2D(Collision2D other) {
+        Health hp = other.gameObject.GetComponent<Health>();
+        if (hp)
+        {
+            hp.Hurt(1);
         }
     }
 }
