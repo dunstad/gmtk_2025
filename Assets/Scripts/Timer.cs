@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Timer : MonoBehaviour
     public int roundNumber = 0;
     private float lifetime = 0f;
     private float roundStartTime;
+    public UnityEvent onNewRound;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,7 @@ public class Timer : MonoBehaviour
         {
             // Debug.Log("Round Over!");
             roundNumber++;
+            onNewRound.Invoke();
             RestartTimer();
         }
     }

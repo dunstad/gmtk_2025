@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
 
 public class CharacterController2D : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private List<GameObject> headPlants;
 	[SerializeField] private List<GameObject> hearts;
 	[SerializeField] private List<GameObject> bullets;
-	public int ammo = 6;
+	public int maxAmmo = 3;
+	private int ammo;
 
 	private float horizontalMove = 0f;
 	private float verticalMove = 0f;
@@ -64,12 +66,17 @@ public class CharacterController2D : MonoBehaviour
 
 	private SpriteRenderer renderer;
 
+	private int lastReloadedRoundNum = 0;
+
+	public UnityEvent onFire;
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		gunArm = GetComponentInChildren<RotateTowardTarget>().gameObject;
 		renderer = GetComponentInChildren<SpriteRenderer>();
 		roundTimer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
+		ammo = maxAmmo;
 	}
 
 	private void Update()
@@ -124,6 +131,17 @@ public class CharacterController2D : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		// reload each round
+		if (lastReloadedRoundNum != roundTimer.roundNumber)
+		{
+			ammo = maxAmmo;
+			foreach (GameObject bullet in bullets)
+			{
+				bullet.SetActive(true);
+			}
+			lastReloadedRoundNum = roundTimer.roundNumber;
+		}
+
 		m_Grounded = false;
 
 		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
@@ -302,9 +320,11 @@ public class CharacterController2D : MonoBehaviour
 
 	void Activate1()
 	{
+
 		Debug.Log("activate1");
 		if (!eating && (ammo > 0))
 		{
+			onFire.Invoke();
 			ammo--;
 			bullets[ammo].SetActive(false);
 			Quaternion bulletRotation = gunArm.transform.rotation;
@@ -333,8 +353,11 @@ public class CharacterController2D : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject.GetComponent<Bullet>() && eating)
 		{
-			bullets[ammo].SetActive(true);
-			ammo++;
+			if (ammo < maxAmmo)
+			{
+				bullets[ammo].SetActive(true);
+				ammo++;
+			}
 		}
 	}
 
