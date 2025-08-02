@@ -25,6 +25,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private List<GameObject> headPlants;
 	[SerializeField] private List<GameObject> hearts;
 	[SerializeField] private List<GameObject> bullets;
+	public int ammo = 6;
 
 	private float horizontalMove = 0f;
 	private float verticalMove = 0f;
@@ -302,8 +303,10 @@ public class CharacterController2D : MonoBehaviour
 	void Activate1()
 	{
 		Debug.Log("activate1");
-		if (!eating)
+		if (!eating && (ammo > 0))
 		{
+			ammo--;
+			bullets[ammo].SetActive(false);
 			Quaternion bulletRotation = gunArm.transform.rotation;
 			bulletRotation *= Quaternion.Euler(0, 0, -90);
 			GameObject newBullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletRotation);
@@ -325,6 +328,14 @@ public class CharacterController2D : MonoBehaviour
 		eating = true;
 		gunArm.SetActive(false);
 		Invoke("StopEating", 1f);
+	}
+
+	private void OnTriggerEnter2D(Collider2D other) {
+		if (other.gameObject.GetComponent<Bullet>() && eating)
+		{
+			bullets[ammo].SetActive(true);
+			ammo++;
+		}
 	}
 
 	void StopEating()

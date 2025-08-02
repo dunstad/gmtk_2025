@@ -66,6 +66,7 @@ public class Bullet : MonoBehaviour
                 }
                 else
                 {
+                    other.GetComponent<Health>().Hurt(1);
                     Sleep();
                 }
             }
