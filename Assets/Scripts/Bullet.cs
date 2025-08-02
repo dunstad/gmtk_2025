@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Bullet : MonoBehaviour
 {
@@ -9,12 +10,13 @@ public class Bullet : MonoBehaviour
     private Vector3 startPos;
     public float startRotation;
     private Rigidbody2D rb;
-    private float lifetime = 0f;
+    public float lifetime = 0f;
     private CapsuleCollider2D collider;
     private SpriteRenderer renderer;
     private Timer roundTimer;
     private float roundTimeFired = 9000f;
     private bool firedThisRound = true;
+    public UnityEvent onWake;
 
 
     // Start is called before the first frame update
@@ -89,6 +91,7 @@ public class Bullet : MonoBehaviour
 
     void WakeUp()
     {
+        onWake.Invoke();
         currentSpeed = speed;
         renderer.enabled = true;
         collider.enabled = true;

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TimeGhost : Ghost
 {
-    private Timer roundTimer;
     private float speedStore;
     private CapsuleCollider2D collider;
     private SpriteRenderer renderer;
@@ -15,7 +14,6 @@ public class TimeGhost : Ghost
     void Start()
     {
         base.Start();
-        roundTimer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
         collider = GetComponent<CapsuleCollider2D>();
         renderer = GetComponentInChildren<SpriteRenderer>();
     }
