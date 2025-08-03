@@ -154,6 +154,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDoubleScoreDeath:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 4073395736377776797}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play
@@ -166,9 +169,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  onDoubleScoreDeath:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!50 &7330835476593563277
 Rigidbody2D:
   serializedVersion: 4

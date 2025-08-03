@@ -13,7 +13,7 @@ public class Ghost : MonoBehaviour
     protected GameObject target;
     public UnityEvent onDeath;
     public UnityEvent onDoubleScoreDeath;
-    private TMP_Text score;
+    protected TMP_Text score;
     protected Timer roundTimer;
 
     protected void Start()
@@ -71,7 +71,10 @@ public class Ghost : MonoBehaviour
             {
                 onDeath.Invoke();
             }
-            score.text = "" + (scoreNum + deathScore);
+            if (GameObject.FindWithTag("Player").GetComponent<Health>().currentHealth > 0)
+            {
+                score.text = "" + (scoreNum + deathScore);
+            }
             // Destroy(gameObject);
             // gameObject.SetActive(false);
             GetComponent<SpriteRenderer>().enabled = false;

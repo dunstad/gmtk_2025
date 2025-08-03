@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TimeGhost : Ghost
 {
@@ -39,9 +40,24 @@ public class TimeGhost : Ghost
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<Bullet>())
+        Bullet bullet = other.gameObject.GetComponent<Bullet>();
+        if (bullet)
         {
-            // Destroy(gameObject);
+            int scoreNum = Int32.Parse(score.text);
+            int deathScore = 10;
+            if (bullet.lifetime >= roundTimer.roundLength)
+            {
+                deathScore *= 2;
+                onDoubleScoreDeath.Invoke();
+            }
+            else
+            {
+                onDeath.Invoke();
+            }
+            if (GameObject.FindWithTag("Player").GetComponent<Health>().currentHealth > 0)
+            {
+                score.text = "" + (scoreNum + deathScore);
+            }
             Sleep();
         }
     }
