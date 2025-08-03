@@ -24,10 +24,10 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private Sprite bodySprite;
 	[SerializeField] private Sprite eatingSprite;
 	[SerializeField] private List<GameObject> headPlants;
-	[SerializeField] private List<GameObject> hearts;
-	[SerializeField] private List<GameObject> bullets;
+	[SerializeField] public List<GameObject> hearts;
+	[SerializeField] public List<GameObject> bullets;
 	public int maxAmmo = 3;
-	private int ammo;
+	public int ammo;
 
 	private float horizontalMove = 0f;
 	private float verticalMove = 0f;
@@ -66,7 +66,7 @@ public class CharacterController2D : MonoBehaviour
 
 	private SpriteRenderer renderer;
 
-	private int lastReloadedRoundNum = 0;
+	public int lastReloadedRoundNum = 0;
 
 	public UnityEvent onFire;
 

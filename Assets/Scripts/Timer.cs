@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
     public float roundLength;
     public float currentTime = 0f;
     public int roundNumber = 0;
-    private float lifetime = 0f;
+    public float lifetime = 0f;
     private float roundStartTime;
     public UnityEvent onNewRound;
 

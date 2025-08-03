@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour
     private List<WaveSpawn> waves;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         int twoOrange = 0;
         int fourOrange = 1;
