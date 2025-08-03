@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 975220519405168989}
   - component: {fileID: 674594151555284851}
   - component: {fileID: 5417071087374769802}
+  - component: {fileID: -6965021655470439246}
   m_Layer: 0
   m_Name: orange portal
   m_TagString: Untagged
@@ -98,3 +99,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghost: {fileID: 6361600482485401921, guid: 1c7b1aa341f54ee4aa7aa556c4c44f4a, type: 3}
+--- !u!95 &-6965021655470439246
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275819456932258127}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fe37a311a6c9127468db5e60c2996cdf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

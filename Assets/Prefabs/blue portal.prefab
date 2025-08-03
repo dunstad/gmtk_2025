@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2713128652240881618}
   - component: {fileID: 3939974601597487549}
   - component: {fileID: 7652189157999177212}
+  - component: {fileID: 538511486449010288}
   m_Layer: 0
   m_Name: blue portal
   m_TagString: Untagged
@@ -98,3 +99,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ghost: {fileID: 1985115076905255762, guid: d255ecd1300c81e4d88d6139a11a420e, type: 3}
+--- !u!95 &538511486449010288
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943524437490817359}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fe37a311a6c9127468db5e60c2996cdf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
